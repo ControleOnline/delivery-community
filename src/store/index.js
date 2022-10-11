@@ -1,7 +1,7 @@
 import Vue       from "vue";
 import Vuex      from "vuex";
 
-import * as modules from "@controleonline/quasar-common-ui/src/store/modules";
+import * as modules from "./modules.js";
 
 
 Vue.use(Vuex);
