@@ -1,4 +1,4 @@
-# FreteClick Quotation (fclick-quote-app)
+# Display
 
 FreteClick Quotation Front End
 
