@@ -4,11 +4,7 @@
       <q-spinner color="primary" class="q-uploader__spinner" />
     </div>
   </div>
-  <q-layout
-    v-else-if="isAdmin && !disabled"
-    view="lHh Lpr fff"
-    class="bg-image"
-  >
+  <q-layout v-else-if="isAdmin && !disabled" view="lHh Lpr fff" class="bg-image">
     <q-header elevated class="bg-white text-grey-8" height-hint="64">
       <q-toolbar class="GPL__toolbar" style="height: 64px">
         <q-btn
@@ -20,23 +16,6 @@
           icon="menu"
           class="q-mx-md menu-button"
         />
-        <div v-if="this.$q.screen.gt.sm" class="q-gutter-sm items-center row">
-          <q-item
-            v-ripple
-            :style="
-              'color:' + ($route.meta.color || 'var(--q-color-secondary)')
-            "
-          >
-            <q-item-section avatar v-if="$route.meta.icon">
-              <q-icon class="item-icon" :name="$route.meta.icon" />
-            </q-item-section>
-            <q-item-section no-wrap>
-              <q-item-label class="module-tittle">{{
-                $t("route." + this.$route.name)
-              }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </div>
         <div class="q-gutter-sm items-center row logo-container">
           <router-link
             v-if="this.$q.screen.gt.sm"
@@ -48,9 +27,7 @@
           </router-link>
           <img v-else :src="currentCompany.logo || ''" class="current-logo" />
         </div>
-        <div
-          class="q-gutter-sm row items-center no-wrap current-logo-container"
-        >
+        <div class="q-gutter-sm row items-center no-wrap current-logo-container">
           <q-toolbar class="">
             <MyCompanies
               :selected="companySelected"
@@ -59,22 +36,24 @@
             />
           </q-toolbar>
         </div>
-
-        <div
-          class="q-gutter-sm row items-center no-wrap current-user-container"
-        >
-          <q-btn round dense flat color="grey-8" icon="notifications">
-            <q-badge
-              v-if="notifications.count > 0"
-              color="red"
-              text-color="white"
-              floating
-            >
-              {{ notifications.count }}
-            </q-badge>
-            <q-tooltip>Notificações</q-tooltip>
-          </q-btn>
-
+        <div v-if="this.$q.screen.gt.sm" class="q-gutter-sm items-center row">
+          <q-item
+            v-ripple
+            :style="'color:' + ($route.meta.color || 'var(--q-color-secondary)')"
+          >
+            <q-item-section avatar v-if="$route.meta.icon">
+              <q-icon class="item-icon" :name="$route.meta.icon" />
+            </q-item-section>
+            <q-item-section no-wrap>
+              <q-item-label class="module-tittle">{{
+                $t("route." + this.$route.name)
+              }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </div>
+        <div class="q-gutter-sm row items-center no-wrap current-user-container">
+          <Notifications :peopleId="$store.getters['auth/user'].people" />
+          <!-- DarkMode -->
           <q-btn icon="account_circle" flat round>
             <q-tooltip>{{ $t("menu.myacount") }}</q-tooltip>
             <q-menu>
@@ -157,9 +136,7 @@
                 <q-icon name="home" color="white" />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="menu-list-text">{{
-                  $t("menu.home")
-                }}</q-item-label>
+                <q-item-label class="menu-list-text">{{ $t("menu.home") }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-separator inset class="q-my-sm" />
@@ -171,18 +148,17 @@
             />
           </q-list>
         </div>
+        <div class="q-pt-xl q-px-sm column pull-button">
+          <DarkMode />
+          <Language />
+        </div>
       </q-scroll-area>
     </q-drawer>
     <q-page-container class="GPL__page-container">
       <q-scroll-observer horizontal @scroll="onScroll"></q-scroll-observer>
       <div>
         <div v-if="!this.$q.screen.gt.sm" class="module-tittle-container">
-          <q-item
-            v-ripple
-            :style="
-              'color:' + ($route.meta.color || 'var(--q-color-secondary)')
-            "
-          >
+          <q-item v-ripple>
             <q-item-section avatar v-if="$route.meta.icon">
               <q-icon class="item-icon" :name="$route.meta.icon" />
             </q-item-section>
@@ -211,12 +187,16 @@
 </template>
 
 <script>
-import MyCompanies from "@controleonline/quasar-common-ui/src/components/common/MyCompanies";
-import Menu from "@controleonline/quasar-common-ui/src/components/common/Menu";
-
+import MyCompanies from "@controleonline/quasar-common-ui/src/components/Common/MyCompanies";
+import Menu from "@controleonline/quasar-common-ui/src/components/Common/Menu";
+import Filters from "@controleonline/quasar-common-ui/src/utils/filters";
+import acl from "@controleonline/quasar-common-ui/src/utils/acl";
+import DarkMode from "@controleonline/quasar-common-ui/src/components/DarkMode/darkModeToggle.vue";
+import Language from "@controleonline/quasar-common-ui/src/components/Language/languageToogle.vue";
 import md5 from "md5";
 import { mapActions, mapGetters } from "vuex";
 import { LocalStorage } from "quasar";
+import Notifications from "@controleonline/quasar-common-ui/src/components/Common/Notifications.vue";
 
 export default {
   name: "AdminLayout",
@@ -224,6 +204,9 @@ export default {
   components: {
     Menu,
     MyCompanies,
+    DarkMode,
+    Language,
+    Notifications,
   },
 
   data() {
@@ -231,6 +214,7 @@ export default {
       notifications: {
         count: 0,
       },
+      ACL: new acl(),
       defaultCompanyLogo: null,
       disabled: false,
       isAdmin: false,
@@ -246,6 +230,8 @@ export default {
   created() {
     this.discoveryDefaultCompany();
     this.selectMyCompanyInSession();
+
+    this.setRoute();
     if (this.getPeopleDefaultCompany) {
       this.pageLoading = false;
     }
@@ -281,7 +267,7 @@ export default {
 
   watch: {
     "$route.name"() {
-      console.log(this.$route);
+      this.setRoute();
     },
     permissions() {
       if (
@@ -302,6 +288,7 @@ export default {
             this.permissions.push(item);
           }
         });
+        this.setRoute();
         this.pageLoading = false;
       }
     },
@@ -313,6 +300,12 @@ export default {
       peopleDefaultCompany: "people/defaultCompany",
     }),
 
+    setRoute() {
+      let storedUser = LocalStorage.getItem("session");
+      storedUser.route = this.$route.name;
+      LocalStorage.set("session", storedUser);
+      this.ACL.setPermission();
+    },
     onClickmenu(route) {
       this.leftDrawerOpen = !this.leftDrawerOpen;
       this.$router.push({ name: route });
@@ -331,11 +324,7 @@ export default {
 
         data.forEach((company) => {
           user_disabled = !company.user.enabled;
-          if (
-            company.enabled &&
-            company.user.employee_enabled &&
-            !user_disabled
-          ) {
+          if (company.enabled && company.user.employee_enabled && !user_disabled) {
             disabled = false;
           } else if (this.companySelected == company.id) {
             this.companySelected = -1;
@@ -350,9 +339,7 @@ export default {
       }
     },
     onCompanySelected(company) {
-      let session = LocalStorage.has("session")
-        ? LocalStorage.getItem("session")
-        : {};
+      let session = LocalStorage.has("session") ? LocalStorage.getItem("session") : {};
 
       session.mycompany = company.id;
 
@@ -360,11 +347,8 @@ export default {
     },
 
     selectMyCompanyInSession() {
-      let session = LocalStorage.has("session")
-        ? LocalStorage.getItem("session")
-        : {};
-      if (session.mycompany !== undefined)
-        this.companySelected = session.mycompany;
+      let session = LocalStorage.has("session") ? LocalStorage.getItem("session") : {};
+      if (session.mycompany !== undefined) this.companySelected = session.mycompany;
     },
 
     discoveryDefaultCompany() {
@@ -432,7 +416,7 @@ export default {
     margin-bottom: 20px
     &__label
       font-size: 14px
-      font-family: 'Exo', Helvetica,Arial,Lucida,sans-serif
+      font-family: 'EB Garamond', 'Exo', Helvetica,Arial,Lucida,sans-serif
       font-weight: 600
       text-transform: uppercase
 .q-item__label.menu-list-text
