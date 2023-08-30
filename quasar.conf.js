@@ -117,6 +117,17 @@ module.exports = function (ctx) {
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack(cfg) {},
+
+      chainWebpack(chain) {
+        chain.module
+          .rule("css")
+          .oneOf("normal")
+          .use("css-loader")
+          .tap((options) => {
+            options.url = true; // Configuração da propriedade url para o css-loader
+            return options;
+          });
+      },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
