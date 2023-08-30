@@ -1,10 +1,8 @@
 import * as Login from "@controleonline/quasar-login-ui/src/router/routes";
-import * as Products from "@controleonline/quasar-products-ui/src/router/routes";
 import * as Queues from "@controleonline/quasar-queues-ui/src/router/routes";
 
 const routes = [
   ...Login.routes,
-  ...Products.routes,
   ...Queues.routes,
   {
     path: "/",
@@ -12,9 +10,9 @@ const routes = [
     children: [
       {
         name: "HomeIndex",
-        path: "home",
+        path: "displays",
         component: () =>
-          import("@controleonline/quasar-dashboard-ui/src/pages/Dashboard.vue"),
+          import("@controleonline/quasar-queues-ui/src/pages/Display/Displays.vue"),
       },
     ],
   },

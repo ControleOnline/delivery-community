@@ -6,7 +6,7 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
-    boot: ["i18n", "myapi", "custom"],
+    boot: ["i18n", "api", "custom"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -29,7 +29,7 @@ module.exports = function (ctx) {
     framework: {
       cssAddon: true,
       iconSet: "material-icons", // Quasar icon set
-      lang: "pt-br", // Quasar language pack
+      lang: "pt-BR", // Quasar language pack
 
       // Possible values for "all":
       // * 'auto' - Auto-import needed Quasar components & directives
@@ -106,28 +106,24 @@ module.exports = function (ctx) {
       // showProgress: false,
       // gzip: true,
       // analyze: true,
-
-      env: ctx.dev
-        ? { APP_API_ENTRYPOINT: "https://localhost:8081/" }
-        : { APP_API_ENTRYPOINT: "https://api.controleonline.com/" },
+      env: require('./src/config/env').ENV_APP,
 
       // Options below are automatically set depending on the env, set them if you want to override
       // preloadChunks: false,
       // extractCSS: false,
-
-      // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack(cfg) {},
-
       chainWebpack(chain) {
         chain.module
-          .rule("css")
-          .oneOf("normal")
-          .use("css-loader")
-          .tap((options) => {
-            options.url = true; // Configuração da propriedade url para o css-loader
+          .rule('css')
+          .oneOf('normal')
+          .use('css-loader')
+          .tap(options => {
+            // Ajuste as opções do css-loader aqui
+            options.url = false; // ou true, dependendo do que você precisa
             return options;
           });
       },
+      // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
+      extendWebpack(cfg) {},
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
@@ -151,9 +147,9 @@ module.exports = function (ctx) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: "Controle Online",
-        short_name: "Controle Online",
-        description: "Controle Online",
+        name: "Display Controle Online",
+        short_name: "Display Controle Online",
+        description: "Display Controle Online",
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
@@ -217,7 +213,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "contabion_crm",
+        appId: "display_controleonline",
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
