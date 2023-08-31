@@ -107,7 +107,7 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       env: require('./src/config/env').ENV_APP,
-
+/*
       // Options below are automatically set depending on the env, set them if you want to override
       // preloadChunks: false,
       // extractCSS: false,
@@ -122,6 +122,7 @@ module.exports = function (ctx) {
             return options;
           });
       },
+      */
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack(cfg) {},
     },
