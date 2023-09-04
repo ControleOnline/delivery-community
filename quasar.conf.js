@@ -107,22 +107,21 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       env: require('./src/config/env').ENV_APP,
-/*
+
       // Options below are automatically set depending on the env, set them if you want to override
       // preloadChunks: false,
       // extractCSS: false,
-      chainWebpack(chain) {
-        chain.module
-          .rule('css')
-          .oneOf('normal')
-          .use('css-loader')
-          .tap(options => {
-            // Ajuste as opções do css-loader aqui
-            options.url = false; // ou true, dependendo do que você precisa
-            return options;
-          });
-      },
-      */
+      // chainWebpack(chain) {
+      //   chain.module
+      //     .rule('css')
+      //     .oneOf('normal')
+      //     .use('css-loader')
+      //     .tap(options => {
+      //       // Ajuste as opções do css-loader aqui
+      //       options.url = false; // ou true, dependendo do que você precisa
+      //       return options;
+      //     });
+      // },
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack(cfg) {},
     },
@@ -146,7 +145,10 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxOptions: {
+        exclude: [/\.htaccess$/], // Excluir o arquivo icon.png do pré-carregamento
+
+      }, // only for GenerateSW
       manifest: {
         name: "Display Controle Online",
         short_name: "Display Controle Online",
