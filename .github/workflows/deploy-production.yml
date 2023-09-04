@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -33,12 +33,12 @@ jobs:
           yarn
 
           npx quasar build -m spa
-          - name: Deploy
-          uses: locaweb/ftp-deploy@1.0.0
-          with:
-            host: ${{ secrets.HOST }} 
-            user: ${{ secrets.USER }}
-            password: ${{ secrets.PASS }}
-            localDir: "/home/runner/work/delivery-community/delivery-community/dist/spa"         
-            remoteDir: "~/public_html"
-            forceSsl: true                                
+      - name: Deploy
+        uses: locaweb/ftp-deploy@1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          user: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
+          localDir: "/home/runner/work/delivery-community/delivery-community/dist/spa"
+          remoteDir: "~/public_html"
+          forceSsl: true
