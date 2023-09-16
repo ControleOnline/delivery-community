@@ -8,6 +8,8 @@ import user from "@controleonline/quasar-common-ui/src/store/user";
 import users from "@controleonline/quasar-common-ui/src/store/users";
 import auth from "@controleonline/quasar-login-ui/src/store/modules/auth";
 import hardware from "@controleonline/quasar-queues-ui/src/store/modules/hardware";
+import queues from "@controleonline/quasar-queues-ui/src/store/modules/queues";
+
 import products from "@controleonline/quasar-products-ui/src/store/products";
 
 import { store } from "quasar/wrappers";
@@ -38,6 +40,7 @@ export default store(function (/* { ssrContext } */) {
       profile,
       user,
       products,
+      queues,
     },
 
     // enable strict mode (adds overhead!)
