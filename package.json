@@ -9,11 +9,11 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@controleonline/quasar-common-ui": "^1.1.94",
+    "@controleonline/quasar-common-ui": "^1.1.98",
     "@controleonline/quasar-layout-ui": "^1.0.4",
     "@controleonline/quasar-login-ui": "^1.0.93",
     "@controleonline/quasar-products-ui": "^1.0.21",
-    "@controleonline/quasar-queues-ui": "^1.0.41",
+    "@controleonline/quasar-queues-ui": "^1.0.42",
     "@fontsource/metropolis": "^4.5.3",
     "@newrelic/browser-agent": "^1.240.0",
     "@quasar/app": "^3.3.3",
