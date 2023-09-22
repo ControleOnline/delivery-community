@@ -9,6 +9,8 @@ import users from "@controleonline/quasar-common-ui/src/store/users";
 import auth from "@controleonline/quasar-login-ui/src/store/modules/auth";
 import hardware from "@controleonline/quasar-queues-ui/src/store/modules/hardware";
 import queues from "@controleonline/quasar-queues-ui/src/store/modules/queues";
+import pay from "@controleonline/quasar-financial-ui/src/store/modules/invoice/pay";
+import receive from "@controleonline/quasar-financial-ui/src/store/modules/invoice/receive"
 
 import products from "@controleonline/quasar-products-ui/src/store/products";
 
@@ -41,6 +43,8 @@ export default store(function (/* { ssrContext } */) {
       user,
       products,
       queues,
+      pay,
+      receive,
     },
 
     // enable strict mode (adds overhead!)

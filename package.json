@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@controleonline/quasar-common-ui": "^1.2.2",
+    "@controleonline/quasar-financial-ui": "^1.1.7",
     "@controleonline/quasar-layout-ui": "^1.0.4",
     "@controleonline/quasar-login-ui": "^1.0.93",
     "@controleonline/quasar-products-ui": "^1.0.21",
